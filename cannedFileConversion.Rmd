@@ -1,0 +1,93 @@
+[33mcommit ba33b2fc68a4494d0f0e4df3646e0e028ce0ddfb[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: Shahan <shahan24h@gmail.com>
+Date:   Fri Jul 25 17:16:33 2025 -0400
+
+    OCr script ready to go for AWS
+
+[1mdiff --git a/scannedFileConversion.Rmd b/scannedFileConversion.Rmd[m
+[1mnew file mode 100644[m
+[1mindex 0000000..d8650ee[m
+[1m--- /dev/null[m
+[1m+++ b/scannedFileConversion.Rmd[m
+[36m@@ -0,0 +1,81 @@[m
+[32m+[m[32m---[m
+[32m+[m[32mtitle: "Scanned File Conversion"[m
+[32m+[m[32mauthor: "Shahan"[m
+[32m+[m[32mdate: "2025-07-25"[m
+[32m+[m[32moutput: pdf_document[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m
+[32m+[m[32m```{r}[m
+[32m+[m[32m#install.packages("pdftools")[m
+[32m+[m[32m#install.packages("magick")[m
+[32m+[m[32m#install.packages("readr")[m
+[32m+[m[32m#install.packages("stringr")[m
+[32m+[m
+[32m+[m[32mlibrary(stringr)[m
+[32m+[m[32mlibrary(pdftools)[m
+[32m+[m[32mlibrary(tesseract)[m
+[32m+[m[32mlibrary(magick)[m
+[32m+[m[32mlibrary(jsonlite)[m
+[32m+[m[32m```[m
+[32m+[m[32m#Set Working Directory[m
+[32m+[m[32m```{r}[m
+[32m+[m[32m#Set Working Directory[m
+[32m+[m[32msetwd("YOUR WORK Directory")[m
+[32m+[m[32mgetwd()[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m[32m```{r}[m
+[32m+[m[32minput_dir <- "input"[m
+[32m+[m[32moutput_dir <- "converted"[m
+[32m+[m[32moutput_jsonl <- file.path(output_dir, "ocr_all_data.jsonl")[m
+[32m+[m
+[32m+[m[32m# Create output folder if it doesn't exist[m
+[32m+[m[32mif (!dir.exists(output_dir)) dir.create(output_dir)[m
+[32m+[m
+[32m+[m[32m# Function to detect file type[m
+[32m+[m[32mdetect_file_type <- function(file_path) {[m
+[32m+[m[32m  con <- file(file_path, "rb")[m
+[32m+[m[32m  header <- readBin(con, what = "raw", n = 10)[m
+[32m+[m[32m  close(con)[m
+[32m+[m[32m  hex <- paste(toupper(as.character(header)), collapse = " ")[m
+[32m+[m[41m  [m
+[32m+[m[32m  if (grepl("^49 49 2A 00", hex) || grepl("^4D 4D 00 2A", hex)) return("tiff")[m
+[32m+[m[32m  return("unknown")[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32m# Collect JSONL lines[m
+[32m+[m[32mjsonl_lines <- c()[m
+[32m+[m
+[32m+[m[32mfile_list <- list.files(input_dir)[m
+[32m+[m[32mfor (file_name in file_list) {[m
+[32m+[m[32m  file_path <- file.path(input_dir, file_name)[m
+[32m+[m[32m  file_type <- detect_file_type(file_path)[m
+[32m+[m
+[32m+[m[32m  if (file_type == "tiff") {[m
+[32m+[m[32m    message("OCR'ing: ", file_name)[m
+[32m+[m[32m    img <- image_read(file_path)[m
+[32m+[m[32m    ocr_text <- ocr(img)[m
+[32m+[m
+[32m+[m[32m    json_line <- toJSON(list([m
+[32m+[m[32m      file_name = file_name,[m
+[32m+[m[32m      ocr_text = ocr_text,[m
+[32m+[m[32m      label = NA  # Replace later if you have known labels[m
+[32m+[m[32m    ), auto_unbox = TRUE)[m
+[32m+[m
+[32m+[m[32m    jsonl_lines <- c(jsonl_lines, json_line)[m
+[32m+[m[32m  }[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32m# Save to JSONL in the output folder[m
+[32m+[m[32mwriteLines(jsonl_lines, output_jsonl)[m
+[32m+[m[32mcat("✅ All OCR data written to:", output_jsonl, "\n")[m
+[32m+[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
