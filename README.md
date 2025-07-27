@@ -1,4 +1,10 @@
 # get_OCR_AWS
+
+[![GitHub stars](https://img.shields.io/github/stars/shahan24h/get_OCR_AWS?style=social)](https://github.com/shahan24h/get_OCR_AWS/stargazers)
+
+A toolkit for processing OCR data using AWS Textract...
+
+
 get ocr using aws_simple script to get ocr data for analysis
 # AWS OCR JSONL Extractor
 
