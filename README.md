@@ -19,4 +19,4 @@ Saves the OCR text output with metadata into a .jsonl file
 USE CASE:
 Used for preparing labeled OCR datasets for document classification models.
 
-[![GitHub stars](https://img.shields.io/github/stars/your-username/your-repo.svg?style=social&label=Star)](https://github.com/shahan24h/get_OCR_AWS.git)
+[![GitHub stars](https://github.com/shahan24h/get_OCR_AWS.git))
