@@ -23,6 +23,6 @@ Performs OCR using AWS Textract
 Saves the OCR text output with metadata into a .jsonl file
 
 USE CASE:
-Used for preparing labeled OCR datasets for document classification models.
+Used for preparing labeled OCR datasets for document classification models. Json format output, might be useful for raw files such as .0001 extention.
 
 [![GitHub stars](https://github.com/shahan24h/get_OCR_AWS.git))
